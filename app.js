@@ -9,20 +9,20 @@ const stuffRouter = require('./routes/stuff');
 //app.use(cors());
 //script pour se connexter à slq server
 
-// var config = {
-//   user: 'Report',
-//   password: 'Afrikedge@2024',
-//   server: '108.175.0.116\\SQL2022', 
-//   database: 'Demo Database BC (23-0)', 
-//   encrypt: false
-// };
 var config = {
-  user: 'sa',
-  password: '123456789',
-  server: 'localhost', 
+  user: 'Report',
+  password: 'Afrikedge@2024',
+  server: '108.175.0.116\\SQL2022', 
   database: 'Demo Database BC (23-0)', 
   encrypt: false
 };
+// var config = {
+//   user: 'sa',
+//   password: '123456789',
+//   server: 'localhost', 
+//   database: 'Demo Database BC (23-0)', 
+//   encrypt: false
+// };
 
 sql.connect(config)
   .then(() => {console.log('Connexion à microsoft sql server réussie !');

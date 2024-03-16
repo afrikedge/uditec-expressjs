@@ -5,7 +5,7 @@ var sql = require("mssql");
     var request = new sql.Request();
       request.query('select * from [TEST].[SalesOrderHeader]')
       .then((soList) => res.status(200).json(soList))
-    .catch((err) => {res.status(400).json({ err });console.log(err)}); 
+    .catch((err) => {res.status(500).json({ err });console.log(err)}); 
   });
 
   exports.getSOCard = ('getSOCard/:id', (req, res, next) => {
@@ -18,9 +18,9 @@ var sql = require("mssql");
               data = [soHeader.recordset[0],soLine.recordset]
               res.status(200).json(data) 
           })
-          .catch((err) => {res.status(400).json({ err });console.log(err)})
+          .catch((err) => {res.status(500).json({ err });console.log(err)})
       })
-      .catch((err) => {res.status(400).json({ err });console.log(err)}); 
+      .catch((err) => {res.status(500).json({ err });console.log(err)}); 
     });
 
 
@@ -31,7 +31,7 @@ var sql = require("mssql");
     var request = new sql.Request();
       request.query('select * from [TEST].[SalesQuoteHeader]')
       .then((sqList) => res.status(200).json(sqList))
-    .catch((err) => {res.status(400).json({ err });console.log(err)}); 
+    .catch((err) => {res.status(500).json({ err });console.log(err)}); 
   });
 
  exports.getSQCard = ('getSQCard/:id', (req, res, next) => {
@@ -44,9 +44,9 @@ var sql = require("mssql");
               data = [sqHeader.recordset[0],sqLine.recordset]
               res.status(200).json(data) 
           })
-          .catch((err) => {res.status(400).json({ err });console.log(err)})
+          .catch((err) => {res.status(500).json({ err });console.log(err)})
       })
-      .catch((err) => {res.status(400).json({ err });console.log(err)}); 
+      .catch((err) => {res.status(500).json({ err });console.log(err)}); 
     });
 
 
@@ -59,7 +59,7 @@ var sql = require("mssql");
       .then(customerList =>{
           res.status(200).json(customerList)
       })
-      .catch((err) => {res.status(400).json({ err });console.log(err)})
+      .catch((err) => {res.status(500).json({ err });console.log(err)})
     });
 
     exports.getCustomerCard = ('/getCustomerCard/:id', (req, res, next) => {
@@ -68,7 +68,7 @@ var sql = require("mssql");
       .then(customerCard =>{
           res.status(200).json(customerCard)
       })
-      .catch((err) => {res.status(400).json({ err });console.log(err)})
+      .catch((err) => {res.status(500).json({ err });console.log(err)})
     });
 
 
@@ -81,7 +81,7 @@ var sql = require("mssql");
       .then(contactList =>{
           res.status(200).json(contactList)
       })
-      .catch((err) => {res.status(400).json({ err });console.log(err)})
+      .catch((err) => {res.status(500).json({ err });console.log(err)})
     });
 
     exports.getContactCard = ('/getContactCard/:id1/:id2', (req, res, next) => {
@@ -90,7 +90,7 @@ var sql = require("mssql");
       .then(contactCard =>{
           res.status(200).json(contactCard)
       })
-      .catch((err) => {res.status(400).json({ err });console.log(err)})
+      .catch((err) => {res.status(500).json({ err });console.log(err)})
     });
 
 
@@ -112,7 +112,7 @@ var sql = require("mssql");
       .then(leadCard =>{
           res.status(200).json(leadCard)
       })
-      .catch((err) => {res.status(400).json({ err });console.log(err)})
+      .catch((err) => {res.status(500).json({ err });console.log(err)})
     });
 
 
