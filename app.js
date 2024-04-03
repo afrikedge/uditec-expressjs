@@ -3,19 +3,20 @@
 const app = express();
 var sql = require("mssql");
 const stuffRouter = require('./routes/stuff');
+const CMRouter = require('./routes/CustmoreManagementApi')
 //const { error } = require('console');
 //let stuff =[];
 //app.use(cors({origin:"http://108.175.0.116:7048" ,credentials:true}));
 //app.use(cors());
 //script pour se connexter à slq server
 
-var config = {
-  user: 'Report',
-  password: 'Afrikedge@2024',
-  server: '108.175.0.116\\SQL2022', 
-  database: 'Demo Database BC (23-0)', 
-  encrypt: false
-};
+  var config = {
+    user: 'sa',
+    password: 'Afrikedge2024',
+    server: '108.175.0.116\\SQL2022', 
+    database: 'Demo Database BC (23-0)', 
+    encrypt: false
+  };
 // var config = {
 //   user: 'sa',
 //   password: '123456789',
@@ -25,8 +26,7 @@ var config = {
 // };
 
 sql.connect(config)
-  .then(() => {console.log('Connexion à microsoft sql server réussie !');
-})
+  .then(() => {console.log('Connexion à microsoft sql server réussie !')})
   .catch((err) => console.log(err));
 
 app.use(express.json());
@@ -39,7 +39,7 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
   next();
 });
-app.use('/app',[stuffRouter]);
+app.use('/app',[stuffRouter,CMRouter]);
 
 
 

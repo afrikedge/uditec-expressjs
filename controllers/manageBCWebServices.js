@@ -1,13 +1,10 @@
 //const axios = require('axios')
 const httpntlm = require('httpntlm')
+const credentials = Buffer.from('108.175.0.116\\webservices:Afrikedge@2003').toString('base64')
+const getHttpntlmConfig = (param,data) => {
 
-
-exports.saveSaleQuote = ('/saveSaleQuote',(req, res, next) => {
-    const url=`http://108.175.0.116:7048/BC230/ODataV4/quotes_run?Company=${req.query.company}`
-    const credentials = Buffer.from('108.175.0.116\\webservices:Afrikedge@2003').toString('base64')
-    httpntlm
-    .post({
-        url: url,
+    return {
+        url: `http://108.175.0.116:7048/BC230/ODataV4/api_run?Company=${param}`,
         username: 'webservices',
         password: 'Afrikedge@2003',
         workstation: 'choose.something',
@@ -16,23 +13,41 @@ exports.saveSaleQuote = ('/saveSaleQuote',(req, res, next) => {
             'Authorization': `NTLM ${credentials}`,
             'accept': 'application/json',
         },
-        body: req.body.data
-        }, function (err, resp) {
-            if (err) {
-                res.status(500).json({ err })
-                console.log('error',err)
-            } else {
-                switch (resp.statusCode){
-                    case 200:
-                        const quoteNo = JSON.parse(JSON.parse(resp.body).value).message
-                        res.status(resp.statusCode).json({quoteNo}); break;
-                    case 400:
-                        const BCErrorMsg = JSON.parse(resp.body)
-                        res.status(resp.statusCode).json(BCErrorMsg); break;
-                    default:
-                        res.status(resp.statusCode).json({message:'Unauthorized, contact your administrator'})
-                }
-            }
-        });
+        body:data
+    }
+}
 
+const sendServerResponse = (res,err,resp) => {
+    if (err) {
+        res.status(500).json({ err })
+    } else {
+        console.log('bjr',resp.body)
+        switch (resp.statusCode){
+            case 200:
+                const message = JSON.parse(resp.body).value
+                if (new String(message).includes("Unkwnown parameter")) res.status(400).json(message)
+                else {
+                    const documentNo = JSON.parse(JSON.parse(resp.body).value).message
+                    res.status(resp.statusCode).json({documentNo})
+                }; break;
+            case 400:
+                const BCErrorMsg400 = JSON.parse(resp.body)
+                res.status(resp.statusCode).json(BCErrorMsg400); break;
+            case 404:
+                const BCErrorMsg404 = JSON.parse(resp.body)
+                res.status(resp.statusCode).json(BCErrorMsg404); break;
+            default:
+                res.status(resp.statusCode).json({message:'Unauthorized, contact your administrator'})
+        }
+    }
+}
+
+exports.getBCWSResponse = ('/getBCWSResponse',(req, res, next) => {
+    httpntlm
+    .post(
+        getHttpntlmConfig(req.query.company,req.body.data),
+        function (err, resp) {
+            sendServerResponse(res,err,resp)
+        });
   });
+
