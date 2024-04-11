@@ -22,6 +22,13 @@ exports.getSingleOptionLabel = ('/getSingleOptionLabel',(req, res, next) => {
   .catch((err) => {res.status(500).json({ err });console.log(err)}); 
 });
 
+exports.getUserList = ('/getUserList',(req, res, next) => {
+  var request = new sql.Request();
+    request.query(`select * from [PROD].[ExternalUser]`)
+    .then((userList) => res.status(200).json(userList))
+  .catch((err) => {res.status(500).json({ err });console.log(err)}); 
+});
+
 exports.getUserInfo = ('/getUserInfo',(req, res, next) => {
   var request = new sql.Request();
   const webUser = req.query.webUser
@@ -92,7 +99,19 @@ exports.getUserInfo = ('/getUserInfo',(req, res, next) => {
     });
 
 
+    exports.getSIList = ('/getSIList/:id',(req, res, next) => {
+      var request = new sql.Request();
+        request.query(`select * from [PROD].[SalesInvoiceHeader] where [Customer No_] ='${req.params.id}'`)
+        .then((siList) => res.status(200).json(siList))
+      .catch((err) => {res.status(500).json({ err });console.log(err)}); 
+    });
 
+    exports.getSILine = ('/getSILine/:id',(req, res, next) => {
+      var request = new sql.Request();
+        request.query(`select * from [PROD].[SalesInvoiceLine] where [Document No_] = '${req.params.id}'`)
+        .then((siLine) => res.status(200).json(siLine))
+      .catch((err) => {res.status(500).json({ err });console.log(err)}); 
+    });
 
 
 
@@ -268,8 +287,6 @@ exports.getUserInfo = ('/getUserInfo',(req, res, next) => {
 
 
     exports.getContactList = ('/getContactList/:id', (req, res, next) => {
-      console.log(req.params)
-
       var request = new sql.Request();
       request.query(`SELECT * FROM [PROD].[Contact] where [Customer No_]='${req.params.id}'`)
       .then(contactList =>{

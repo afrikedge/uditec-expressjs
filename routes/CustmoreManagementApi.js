@@ -19,7 +19,7 @@ router.get('/getADList',CMCtrl.getADList);
 router.get('/getADCard/:id',CMCtrl.getADCard);
 
 router.get('/getRPRQList',CMCtrl.getRPRQList);
-router.get('/getRPQCard/:id',CMCtrl.getRPRQCard);
+router.get('/getRPRQCard/:id',CMCtrl.getRPRQCard);
 
 router.get('/getPVRQList',CMCtrl.getPVRQList);
 router.get('/getPVRQCard/:id',CMCtrl.getPVRQCard);

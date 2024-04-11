@@ -9,10 +9,9 @@ router.post('/getBCWSResponse',BCCtrl.getBCWSResponse)
 
 
 ///requetes de vue sql
-router.get('/getOptionLabelList',StuffCtrl.getOptionLabelList)
-router.get('/getSingleOptionLabel',StuffCtrl.getSingleOptionLabel)
 
 router.get('/getUserInfo',StuffCtrl.getUserInfo);
+router.get('/getUserList',StuffCtrl.getUserList);
 
 router.get('/getSOList',StuffCtrl.getSOList);
 router.get('/getSOCard/:id',StuffCtrl.getSOCard);
@@ -20,6 +19,9 @@ router.get('/getSOCardLine/:id',StuffCtrl.getSOCardLine);
 
 router.get('/getSQList',StuffCtrl.getSQList);
 router.get('/getSQCard/:id',StuffCtrl.getSQCard);
+
+router.get('/getSIList/:id',StuffCtrl.getSIList);
+router.get('/getSILine/:id',StuffCtrl.getSILine);
 
 router.get('/getCRList',StuffCtrl.getCRList);
 router.get('/getCRCard/:id',StuffCtrl.getCRCard);

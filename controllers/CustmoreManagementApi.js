@@ -109,7 +109,7 @@ exports.getRACard = ('/getRACard/:id',(req, res, next) => {
         request.query(`select * from [PROD].[RecoveryActivityHeader] where [No_]='${req.params.id}' `)
         .then((result1) => {
             if(result1.recordset.length>0){
-                data.push[result1.recordset[0]]
+                data.push(result1.recordset[0])
                 request.query(`select * from [PROD].[RecoveryActivityLine] where [Document No_]= '${req.params.id}'`)
                 .then(result2 => {
                     if(result2.recordset.length>0){
@@ -200,7 +200,7 @@ exports.getRPRQList = ('/getRPRQList',(req, res, next) => {
 
 exports.getRPRQCard = ('/getRPRQCard/:id',(req, res, next) => {
     var request = new sql.Request();
-        request.query(`select * from [PROD].[RepossessionRequest] where [No_]='${req.params.id}' `)
+        request.query(`select * from [PROD].[RepossessionRequest] where [No_]='${req.params.id}'` )
         .then((result) => {
             if(result.recordset.length>0){
                 res.status(200).json(result.recordset[0])

@@ -3,7 +3,13 @@
 const app = express();
 var sql = require("mssql");
 const stuffRouter = require('./routes/stuff');
-const CMRouter = require('./routes/CustmoreManagementApi')
+const CustmoreManagementApiRouter = require('./routes/CustmoreManagementApi')
+const CustomerRelatedViewsRouter = require('./routes/CustomerRelatedViews')
+const LabelManagementApiRouter = require('./routes/LabelManagementApi')
+const CreditRelatedViewsRouter = require('./routes/CreditRelatedViews')
+const LeadRelatedViewsRouter = require('./routes/LeadRelatedViews')
+const SalesGlobalRelatedViewsRouter = require('./routes/SalesGlobalRelatedViews')
+const ItemRelatedViewsRouter = require('./routes/ItemRelatedViews')
 //const { error } = require('console');
 //let stuff =[];
 //app.use(cors({origin:"http://108.175.0.116:7048" ,credentials:true}));
@@ -39,7 +45,7 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
   next();
 });
-app.use('/app',[stuffRouter,CMRouter]);
+app.use('/app',[stuffRouter,CustmoreManagementApiRouter,CustomerRelatedViewsRouter,LabelManagementApiRouter,CreditRelatedViewsRouter,LeadRelatedViewsRouter,SalesGlobalRelatedViewsRouter,ItemRelatedViewsRouter]);
 
 
 
