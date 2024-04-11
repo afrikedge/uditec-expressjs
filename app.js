@@ -17,8 +17,8 @@ const ItemRelatedViewsRouter = require('./routes/ItemRelatedViews')
 //script pour se connexter à slq server
 
   var config = {
-    user: 'sa',
-    password: 'Afrikedge2024',
+    user: 'Report',
+    password: 'Afrikedge@2024',
     server: '108.175.0.116\\SQL2022', 
     database: 'Demo Database BC (23-0)', 
     encrypt: false
