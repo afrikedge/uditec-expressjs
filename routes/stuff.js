@@ -35,8 +35,8 @@ router.get('/getAmortization',StuffCtrl.getAmortization);
 router.get('/getCustomerList',StuffCtrl.getCustomerList);
 router.get('/getCustomerCard/:id',StuffCtrl.getCustomerCard);
 
-router.get('/getContactList/:id',StuffCtrl.getContactList);
-router.get('/getContactCard/:id1/:id2',StuffCtrl.getContactCard);
+router.get('/getContactList',StuffCtrl.getContactList);
+router.get('/getContactCard/:id',StuffCtrl.getContactCard);
 
 router.get('/getLeadList',StuffCtrl.getLeadList);
 router.get('/getLeadCard/:id',StuffCtrl.getLeadCard);

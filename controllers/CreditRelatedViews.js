@@ -92,3 +92,37 @@ exports.getCreditContractCard = ('/getCreditContractCard',(req, res, next) => {
     }
 });
 
+exports.getCreditContractNewStatus = ('/getCreditContractNewStatus',(req, res, next) => {
+    const { creditContractNo,creditContractStatus,languageId } = req.query
+    if(creditContractNo && creditContractStatus && languageId){
+        const request = new sql.Request();
+        request.input('inputField1', sql.VarChar, creditContractNo);
+        request.input('inputField2', sql.Int, creditContractStatus);
+        request.input('inputField3', sql.VarChar, languageId);
+        request.query("select * from [PROD].[CreditContractTransition](@inputField1,@inputField2,@inputField3)")
+        .then((result) => {
+            if(result.recordset.length>0){
+                res.status(200).json(result.recordset)
+            }else{
+                res.status(404).json({message:"Aucun enregistrement n'a été trouvé"})
+            }
+        })
+        .catch((err) => {res.status(500).json({ err });console.log(err)}); 
+    }else{
+        res.status(400).json({message:"Un ou plusieurs paramètres absents de la requête Http"})
+    }
+
+});
+
+exports.getCreditContractGP = ('/getCreditContractGP',(req, res, next) => {
+    var request = new sql.Request();
+    request.query(`select * from [PROD].[AGPGlobalParameter]`)
+    .then((result) => {
+        if(result.recordset.length>0){
+            res.status(200).json(result.recordset[0])
+        }else{
+            res.status(404).json({message:"Aucun enregistrement n'a été trouvé"})
+        }
+    })
+    .catch((err) => {res.status(500).json({ err });console.log(err)}); 
+  });

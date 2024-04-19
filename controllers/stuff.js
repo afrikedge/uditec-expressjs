@@ -286,18 +286,18 @@ exports.getUserInfo = ('/getUserInfo',(req, res, next) => {
 
 
 
-    exports.getContactList = ('/getContactList/:id', (req, res, next) => {
+    exports.getContactList = ('/getContactList', (req, res, next) => {
       var request = new sql.Request();
-      request.query(`SELECT * FROM [PROD].[Contact] where [Customer No_]='${req.params.id}'`)
+      request.query(`SELECT * FROM [PROD].[Contact]`)
       .then(contactList =>{
           res.status(200).json(contactList)
       })
       .catch((err) => {res.status(500).json({ err });console.log(err)})
     });
 
-    exports.getContactCard = ('/getContactCard/:id1/:id2', (req, res, next) => {
+    exports.getContactCard = ('/getContactCard/:id', (req, res, next) => {
       var request = new sql.Request();
-      request.query(`SELECT * FROM [PROD].[Contact] where [Customer No_]='${req.params.id1}' AND [No_]='${req.params.id2}'`)
+      request.query(`SELECT * FROM [PROD].[Contact] where [No_] ='${req.params.id}'`)
       .then(contactCard =>{
           res.status(200).json(contactCard)
       })
@@ -400,8 +400,8 @@ exports.getUserInfo = ('/getUserInfo',(req, res, next) => {
     exports.getShipToAddressList = ('/getShipToAddressList/:id', (req, res, next) => {
       var request = new sql.Request();
       request.query(`SELECT * FROM [PROD].[ShipToAddress] where [Customer No_]='${req.params.id}'`)
-      .then(shipToAddressList =>{
-          res.status(200).json(shipToAddressList)
+      .then(result =>{
+          res.status(200).json(result.recordset)
       })
       .catch((err) => {res.status(400).json({ err });console.log(err)})
     });
