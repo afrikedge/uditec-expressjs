@@ -11,6 +11,8 @@ router.get('/getGlobalContactList',SGRVCtrl.getGlobalContactList);
 
 router.get('/getVATBUSPostingGroupList',SGRVCtrl.getVATBUSPostingGroupList);
 
+router.get('/getPriceGroupList',SGRVCtrl.getPriceGroupList);
+
 router.get('/getApprovalFlow',SGRVCtrl.getApprovalFlow);
 
 router.get('/getPaymentRequestList',SGRVCtrl.getPaymentRequestList);

@@ -61,7 +61,14 @@ exports.getVATBUSPostingGroupList = ('/getVATBUSPostingGroupList', (req, res, ne
     .catch((err) => {res.status(500).json({ err });console.log(err)}); 
   });
 
-
+  exports.getPriceGroupList = ('/getPriceGroupList', (req, res, next) => {
+    var request = new sql.Request();
+    request.query("SELECT * FROM [PROD].[CustomerPriceGroup]")
+    .then((result) => {
+        res.status(200).json(result.recordset)
+    })
+    .catch((err) => {res.status(500).json({ err });console.log(err)}); 
+  });
 
 
 exports.getApprovalFlow = ('/getApprovalFlow', (req, res, next) => {
@@ -89,7 +96,7 @@ exports.getApprovalFlow = ('/getApprovalFlow', (req, res, next) => {
 
   exports.getPaymentRequestList = ('/getPaymentRequestList',(req, res, next) => {
     const request = new sql.Request();
-    request.query(`select * from [PROD].[PaymentRequestHeader]`)
+    request.query(` `)
     .then((result) => {
         if(result.recordset.length>0){
             res.status(200).json(result.recordset)
@@ -107,8 +114,9 @@ exports.getPaymentRequestCard = ('/getPaymentRequestCard',(req, res, next) => {
         request.input('inputField', sql.VarChar, documentNo);
         request.query(`select * from [PROD].[PaymentRequestHeader] where [No_]=@inputField `)
         .then((result1) => {
+            console.log(result1)
             if(result1.recordset.length>0){
-                data.push[result1.recordset[0]]
+                data.push(result1.recordset[0])
                 request.query(`select * from [PROD].[PaymentRequestLine] where [Document No_]= @inputField`)
                 .then(result2 => {
                     if(result2.recordset.length>0){
@@ -125,6 +133,6 @@ exports.getPaymentRequestCard = ('/getPaymentRequestCard',(req, res, next) => {
         })
         .catch((err) => {res.status(500).json({ err });console.log(err)}); 
     }else{
-        res.status(400).json({message:"Paramètre <documentNo> absent de la requête Http"})
+        res.status(400).json({message:"Paramètre <documentNom> absent de la requête Http"})
     }
 });

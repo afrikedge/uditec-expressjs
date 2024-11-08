@@ -10,7 +10,7 @@ router.post('/getBCWSResponse',BCCtrl.getBCWSResponse)
 
 ///requetes de vue sql
 
-router.get('/getUserInfo',StuffCtrl.getUserInfo);
+//router.get('/getUserInfo',StuffCtrl.getUserInfo);
 router.get('/getUserList',StuffCtrl.getUserList);
 
 router.get('/getSOList',StuffCtrl.getSOList);
@@ -28,11 +28,11 @@ router.get('/getCRCard/:id',StuffCtrl.getCRCard);
 router.get('/getMirindraGP',StuffCtrl.getMirindraGP);
 router.get('/getMirindraCV/:id',StuffCtrl.getMirindraCV);
 router.get('/getMirindraRD',StuffCtrl.getMirindraRD);
+router.get('/getMirindraDuration',StuffCtrl.getMirindraDuration);
 router.get('/getItemVAT',StuffCtrl.getItemVAT);
 router.get('/getAmortization',StuffCtrl.getAmortization);
 
-
-router.get('/getCustomerList',StuffCtrl.getCustomerList);
+router.get('/getContactListOfCustomer',StuffCtrl.getContactListOfCustomer);
 router.get('/getCustomerCard/:id',StuffCtrl.getCustomerCard);
 
 router.get('/getContactList',StuffCtrl.getContactList);

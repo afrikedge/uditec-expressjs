@@ -11,26 +11,22 @@ const LeadRelatedViewsRouter = require('./routes/LeadRelatedViews')
 const SalesGlobalRelatedViewsRouter = require('./routes/SalesGlobalRelatedViews')
 const ItemRelatedViewsRouter = require('./routes/ItemRelatedViews')
 const SalesOrderRelatedViewsRouter = require('./routes/SalesOrderRelatedViews')
+const UserRelatedViewsRouter = require('./routes/UserRelatedViews')
+const FilesManagementApiRouter = require('./routes/FilesManagementApi')
+
 //const { error } = require('console');
 //let stuff =[];
 //app.use(cors({origin:"http://108.175.0.116:7048" ,credentials:true}));
 //app.use(cors());
 //script pour se connexter à slq server
 
-  var config = {
-    user: 'sa',
-    password: 'Afrikedge2024',
-    server: '108.175.0.116\\SQL2022', 
-    database: 'Demo Database BC (23-0)', 
+ var config = {
+    user: 'WebApp',
+    password: '@Fr!kedge20$4',
+    server: '10.64.25.9', 
+    database: 'UDT-BC365', 
     encrypt: false
   };
-// var config = {
-//   user: 'sa',
-//   password: '123456789',
-//   server: 'localhost', 
-//   database: 'Demo Database BC (23-0)', 
-//   encrypt: false
-// };
 
 sql.connect(config)
   .then(() => {console.log('Connexion à microsoft sql server réussie !')})
@@ -46,7 +42,7 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
   next();
 });
-app.use('/app',[stuffRouter,RecoveryRelatedViewsRouter,CustomerRelatedViewsRouter,LabelManagementApiRouter,CreditRelatedViewsRouter,LeadRelatedViewsRouter,SalesGlobalRelatedViewsRouter,ItemRelatedViewsRouter,SalesOrderRelatedViewsRouter]);
+app.use('/app',[stuffRouter,RecoveryRelatedViewsRouter,CustomerRelatedViewsRouter,LabelManagementApiRouter,CreditRelatedViewsRouter,LeadRelatedViewsRouter,SalesGlobalRelatedViewsRouter,ItemRelatedViewsRouter,SalesOrderRelatedViewsRouter,UserRelatedViewsRouter,FilesManagementApiRouter]);
 
 
 

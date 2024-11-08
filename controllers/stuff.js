@@ -29,41 +29,57 @@ exports.getUserList = ('/getUserList',(req, res, next) => {
   .catch((err) => {res.status(500).json({ err });console.log(err)}); 
 });
 
-exports.getUserInfo = ('/getUserInfo',(req, res, next) => {
-  var request = new sql.Request();
-  const webUser = req.query.webUser
-    request.query(`select * from [PROD].[ExternalUser] where Code='${webUser}'`)
-    .then((userData) => res.status(200).json(userData))
-  .catch((err) => {res.status(500).json({ err });console.log(err)}); 
-});
+
 
   exports.getSOList = ('/getSOList',(req, res, next) => {
     const respCenter = req.query.respCenter
-    var request = new sql.Request();
-      request.query(`select * from [PROD].[SalesOrderHeader] where [Responsibility Center] ='${respCenter}'`)
+    if(respCenter){
+      const request = new sql.Request();
+      request.query(`select * from [PROD].[SalesOrderHeader] where [Responsibility Center] ='${respCenter}' order by [Document Date] desc,[No_] desc `)
       .then((soList) => res.status(200).json(soList))
-    .catch((err) => {res.status(500).json({ err });console.log(err)}); 
+      .catch((err) => {res.status(500).json({ err });console.log(err)}); 
+    }else{
+      const request = new sql.Request();
+      request.query(`select * from [PROD].[SalesOrderHeader] order by [Document Date] desc,[No_] desc `)
+      .then((soList) => res.status(200).json(soList))
+      .catch((err) => {res.status(500).json({ err });console.log(err)}); 
+    }
   });
 
   exports.getSOCard = ('getSOCard/:id', (req, res, next) => {
     let data = []
     const respCenter = req.query.respCenter
-    var request = new sql.Request();
-      request.query(`SELECT * FROM [PROD].[SalesOrderHeader] WHERE [No_]='${req.params.id}' and [Responsibility Center] ='${respCenter}'`)
-      .then(soHeader => {
-          request.query(`SELECT * FROM [PROD].[SalesOrderLine] WHERE [Document No_]='${req.params.id}'`)
-          .then(soLine =>{
-              data = [soHeader.recordset[0],soLine.recordset]
-              res.status(200).json(data) 
-          })
-          .catch((err) => {res.status(500).json({ err });console.log(err)})
-      })
-      .catch((err) => {res.status(500).json({ err });console.log(err)}); 
+        if(respCenter){
+          const request = new sql.Request();
+            request.query(`SELECT * FROM [PROD].[SalesOrderHeader] WHERE [No_]='${req.params.id}' and [Responsibility Center] ='${respCenter}'`)
+            .then(soHeader => {
+                request.query(`SELECT * FROM [PROD].[SalesOrderLine] WHERE [Document No_]='${req.params.id}'`)
+                .then(soLine =>{
+                    data = [soHeader.recordset[0],soLine.recordset]
+                    res.status(200).json(data) 
+                })
+                .catch((err) => {res.status(500).json({ err });console.log(err)})
+            })
+            .catch((err) => {res.status(500).json({ err });console.log(err)}); 
+        }else{
+            const request = new sql.Request();
+            request.query(`SELECT * FROM [PROD].[SalesOrderHeader] WHERE [No_]='${req.params.id}'`)
+            .then(soHeader => {
+                request.query(`SELECT * FROM [PROD].[SalesOrderLine] WHERE [Document No_]='${req.params.id}'`)
+                .then(soLine =>{
+                    data = [soHeader.recordset[0],soLine.recordset]
+                    res.status(200).json(data) 
+                })
+                .catch((err) => {res.status(500).json({ err });console.log(err)})
+            })
+            .catch((err) => {res.status(500).json({ err });console.log(err)}); 
+        }
     });
+
 
   exports.getSOCardLine = ('getSOCardLine/:id', (req, res, next) => {
     var request = new sql.Request();
-        request.query(`SELECT * FROM [PROD].[SalesOrderLine] WHERE [Document No_]='${req.params.id}'`)
+        request.query(`SELECT * FROM [PROD].[SalesOrderLine] WHERE [Document No_]='${req.params.id}' order by [Line No_]`)
         .then(soLine =>{
             res.status(200).json(soLine) 
         })
@@ -76,26 +92,47 @@ exports.getUserInfo = ('/getUserInfo',(req, res, next) => {
 
   exports.getSQList = ('/getSQList',(req, res, next) => {
     const respCenter = req.query.respCenter
-    var request = new sql.Request();
-      request.query(`select * from [PROD].[SalesQuoteHeader] where [Responsibility Center] ='${respCenter}'`)
-      .then((sqList) => res.status(200).json(sqList))
-    .catch((err) => {res.status(500).json({ err });console.log(err)}); 
+        if(respCenter){
+          const request = new sql.Request();
+            request.query(`select * from [PROD].[SalesQuoteHeader] where [Responsibility Center] ='${respCenter}' order by [Document Date] desc,[No_] desc `)
+            .then((sqList) => res.status(200).json(sqList))
+          .catch((err) => {res.status(500).json({ err });console.log(err)}); 
+        }else{
+            const request = new sql.Request();
+            request.query(`select * from [PROD].[SalesQuoteHeader] order by [Document Date] desc,[No_] desc `)
+            .then((sqList) => res.status(200).json(sqList))
+            .catch((err) => {res.status(500).json({ err });console.log(err)}); 
+        }
   });
 
  exports.getSQCard = ('getSQCard/:id', (req, res, next) => {
     let data = []
     const respCenter = req.query.respCenter
-    var request = new sql.Request();
-      request.query(`SELECT * FROM [PROD].[SalesQuoteHeader] WHERE [No_]='${req.params.id}' and [Responsibility Center] ='${respCenter}'`)
-      .then(sqHeader => {
-          request.query(`SELECT * FROM [PROD].[SalesQuoteLine] WHERE [Document No_]='${req.params.id}'`)
-          .then(sqLine =>{
-              data = [sqHeader.recordset[0],sqLine.recordset]
-              res.status(200).json(data) 
-          })
-          .catch((err) => {res.status(500).json({ err });console.log(err)})
-      })
-      .catch((err) => {res.status(500).json({ err });console.log(err)}); 
+        if(respCenter	){
+          const request = new sql.Request();
+            request.query(`SELECT * FROM [PROD].[SalesQuoteHeader] WHERE [No_]='${req.params.id}' and [Responsibility Center] ='${respCenter}'`)
+            .then(sqHeader => {
+                request.query(`SELECT * FROM [PROD].[SalesQuoteLine] WHERE [Document No_]='${req.params.id}' order by [Line No_] asc`)
+                .then(sqLine =>{
+                    data = [sqHeader.recordset[0],sqLine.recordset]
+                    res.status(200).json(data) 
+                })
+                .catch((err) => {res.status(500).json({ err });console.log(err)})
+            })
+            .catch((err) => {res.status(500).json({ err });console.log(err)}); 
+        }else{
+            const request = new sql.Request();
+            request.query(`SELECT * FROM [PROD].[SalesQuoteHeader] WHERE [No_]='${req.params.id}'`)
+            .then(sqHeader => {
+                request.query(`SELECT * FROM [PROD].[SalesQuoteLine] WHERE [Document No_]='${req.params.id}' order by [Line No_] asc`)
+                .then(sqLine =>{
+                    data = [sqHeader.recordset[0],sqLine.recordset]
+                    res.status(200).json(data) 
+                })
+                .catch((err) => {res.status(500).json({ err });console.log(err)})
+            })
+            .catch((err) => {res.status(500).json({ err });console.log(err)}); 
+        }
     });
 
 
@@ -124,49 +161,92 @@ exports.getUserInfo = ('/getUserInfo',(req, res, next) => {
 
   exports.getCRList = ('/getCRList',(req, res, next) => {
       const respCenter = req.query.respCenter
-      var request = new sql.Request();
-      request.query(`select * from [PROD].[MirindraRequestHeader] where [Responsibility Center] ='${respCenter}'`)
-      .then((result) => {
-          if(result.recordset.length>0){
+      if(respCenter){
+          const request = new sql.Request();
+          request.query(`select * from [PROD].[MirindraRequestHeader] where [Responsibility Center] ='${respCenter}' order by [Document Date] desc,[No_] desc `)
+          .then((result) => {
               res.status(200).json(result.recordset)
-          }else{
-              res.status(404).json({message:"Aucun enregistrement n'a été trouvé"})
-          }
-
-      })
-      .catch((err) => {res.status(500).json({ err });console.log(err)}); 
-  });
-
- exports.getCRCard = ('getCRCard/:id', (req, res, next) => {
-      let data = []
-      const respCenter = req.query.respCenter
-      var request = new sql.Request();
-          request.query(`SELECT * FROM [PROD].[MirindraRequestHeader] WHERE [No_]='${req.params.id}' and [Responsibility Center] ='${respCenter}'`)
-          .then(result1 => {
-              if(result1.recordset.length>0){
-                  data.push(result1.recordset[0])
-                  request.query(`SELECT * FROM [PROD].[MirindraRequestLine] WHERE [Document No_]='${req.params.id}'`)
-                  .then(result2 =>{
-                      data.push(result2.recordset)
-                      request.query(`SELECT * FROM [PROD].[MirindraRequestCriteria] WHERE [Document No_]='${req.params.id}' and [Document Type]=0 `)
-                      .then(result3 =>{
-                          data.push(result3.recordset)
-                          request.query(`SELECT * FROM [PROD].[CreditAmortization] WHERE [Document No_]='${req.params.id}' and [Document Type]=0 `)
-                          .then(result4 =>{
-                              data.push(result4.recordset)
-                              res.status(200).json(data)                              
-                          })
-                          .catch((err) => {res.status(500).json({ err });console.log(err)})
-                      })
-                      .catch((err) => {res.status(500).json({ err });console.log(err)})
-                  })
-                  .catch((err) => {res.status(500).json({ err });console.log(err)})
-              }else{
-                  res.status(404).json({message:"Aucun enregistrement n'a été trouvé"})
-              }
           })
           .catch((err) => {res.status(500).json({ err });console.log(err)}); 
-    });
+      }else{
+          const request = new sql.Request();
+          request.query(`select * from [PROD].[MirindraRequestHeader] order by [Document Date] desc,[No_] desc`)
+          .then((result) => {
+              res.status(200).json(result.recordset)
+          })
+          .catch((err) => {res.status(500).json({ err });console.log(err)});
+      }
+  });
+
+  exports.getCRCard = ('getCRCard/:id', (req, res, next) => {
+    let data = []
+    const respCenter = req.query.respCenter
+    if(respCenter){
+        const request = new sql.Request();
+        request.query(`SELECT * FROM [PROD].[MirindraRequestHeader] WHERE [No_]='${req.params.id}' and [Responsibility Center] ='${respCenter}'`)
+        .then(result1 => {
+            if(result1.recordset.length>0){
+                data.push(result1.recordset[0])
+                request.query(`SELECT * FROM [PROD].[MirindraRequestLine] WHERE [Document No_]='${req.params.id}'`)
+                .then(result2 =>{
+                    data.push(result2.recordset)
+                    request.query(`SELECT * FROM [PROD].[MirindraRequirement]('${req.params.id}')`)
+                    .then(result3 =>{
+                        data.push(result3.recordset)
+                        request.query(`SELECT * FROM [PROD].[MirindraScoring]('${req.params.id}')`)
+                        .then(result4 =>{
+                            data.push(result4.recordset)
+                            request.query(`SELECT * FROM [PROD].[CreditAmortization] WHERE [Document No_]='${req.params.id}' and [Document Type]=0 `)
+                            .then(result5 =>{
+                                data.push(result5.recordset)
+                                res.status(200).json(data)                              
+                            })
+                            .catch((err) => {res.status(500).json({ err });console.log(err)})
+                        })
+                        .catch((err) => {res.status(500).json({ err });console.log(err)})
+                    })
+                    .catch((err) => {res.status(500).json({ err });console.log(err)})
+                })
+                .catch((err) => {res.status(500).json({ err });console.log(err)})
+            }else{
+                res.status(404).json({message:"Aucun enregistrement n'a été trouvé"})
+            }
+        })
+        .catch((err) => {res.status(500).json({ err });console.log(err)}); 
+    }else{
+        const request = new sql.Request();
+        request.query(`SELECT * FROM [PROD].[MirindraRequestHeader] WHERE [No_]='${req.params.id}'`)
+        .then(result1 => {
+            if(result1.recordset.length>0){
+                data.push(result1.recordset[0])
+                request.query(`SELECT * FROM [PROD].[MirindraRequestLine] WHERE [Document No_]='${req.params.id}'`)
+                .then(result2 =>{
+                    data.push(result2.recordset)
+                    request.query(`SELECT * FROM [PROD].[MirindraRequirement]('${req.params.id}')`)
+                    .then(result3 =>{
+                        data.push(result3.recordset)
+                        request.query(`SELECT * FROM [PROD].[MirindraScoring]('${req.params.id}')`)
+                        .then(result4 =>{
+                            data.push(result4.recordset)
+                            request.query(`SELECT * FROM [PROD].[CreditAmortization] WHERE [Document No_]='${req.params.id}' and [Document Type]=0 `)
+                            .then(result5 =>{
+                                data.push(result5.recordset)
+                                res.status(200).json(data)                              
+                            })
+                            .catch((err) => {res.status(500).json({ err });console.log(err)})
+                        })
+                        .catch((err) => {res.status(500).json({ err });console.log(err)})
+                    })
+                    .catch((err) => {res.status(500).json({ err });console.log(err)})
+                })
+                .catch((err) => {res.status(500).json({ err });console.log(err)})
+            }else{
+                res.status(404).json({message:"Aucun enregistrement n'a été trouvé"})
+            }
+        })
+        .catch((err) => {res.status(500).json({ err });console.log(err)}); 
+    }
+});
 
     exports.getMirindraGP = ('/getMirindraGP',(req, res, next) => {
       var request = new sql.Request();
@@ -199,6 +279,21 @@ exports.getUserInfo = ('/getUserInfo',(req, res, next) => {
       const docNo = req.query.docNo
       request.query(`select [PROD].[MirindraDeposit](0,'${docNo?docNo:''}')`)
       .then((result) => {
+          if(result.recordset.length>0){
+              res.status(200).json(result.recordset[0][''])
+          }else{
+              res.status(404).json({message:"Aucun enregistrement n'a été trouvé"})
+          }
+      })
+      .catch((err) => {res.status(500).json({ err });console.log(err)}); 
+    });
+
+    exports.getMirindraDuration = ('/getMirindraDuration',(req, res, next) => {
+      var request = new sql.Request();
+      const docNo = req.query.docNo
+      request.query(`select [PROD].[MirindraDuration](0,'${docNo?docNo:''}')`)
+      .then((result) => {
+        console.log(result)
           if(result.recordset.length>0){
               res.status(200).json(result.recordset[0][''])
           }else{
@@ -245,36 +340,6 @@ exports.getUserInfo = ('/getUserInfo',(req, res, next) => {
       .catch((err) => {res.status(500).json({ err });console.log(err)}); 
     });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    exports.getCustomerList = ('/getCustomerList', (req, res, next) => {
-      var request = new sql.Request();
-      request.query(`SELECT * FROM [PROD].[Customer]`)
-      .then(customerList =>{
-          res.status(200).json(customerList)
-      })
-      .catch((err) => {res.status(500).json({ err });console.log(err)})
-    });
-
     exports.getCustomerCard = ('/getCustomerCard/:id', (req, res, next) => {
       var request = new sql.Request();
       request.query(`SELECT * FROM [PROD].[Customer] WHERE [No_] ='${req.params.id}'`)
@@ -294,6 +359,21 @@ exports.getUserInfo = ('/getUserInfo',(req, res, next) => {
       })
       .catch((err) => {res.status(500).json({ err });console.log(err)})
     });
+
+    exports.getContactListOfCustomer = ('/getContactListOfCustomer', (req, res, next) => {
+      const customerId = req.query.customerId
+      if(customerId){
+        const request = new sql.Request();
+        request.input('inputField', sql.VarChar, customerId);
+        request.query(`SELECT * FROM [PROD].[Contact] where [Customer No_]=@inputField`)
+        .then(contactList =>{
+            res.status(200).json(contactList)
+        })
+        .catch((err) => {res.status(500).json({ err });console.log(err)})
+    }else{
+        res.status(400).json({message:"Paramètre <customerId> absent de la requête Http"})
+    }
+  });
 
     exports.getContactCard = ('/getContactCard/:id', (req, res, next) => {
       var request = new sql.Request();
@@ -402,6 +482,7 @@ exports.getUserInfo = ('/getUserInfo',(req, res, next) => {
       request.query(`SELECT * FROM [PROD].[ShipToAddress] where [Customer No_]='${req.params.id}'`)
       .then(result =>{
           res.status(200).json(result.recordset)
+
       })
       .catch((err) => {res.status(400).json({ err });console.log(err)})
     });
@@ -428,22 +509,41 @@ exports.getUserInfo = ('/getUserInfo',(req, res, next) => {
 
 
     exports.getCampaignList = ('/getCampaignList', (req, res, next) => {
-      var request = new sql.Request();
-      request.query(`SELECT * FROM [PROD].[Campaign]`)
-      .then(campaignList =>{
-          res.status(200).json(campaignList)
-      })
-      .catch((err) => {res.status(400).json({ err });console.log(err)})
+      const respCenter = req.query.respCenter
+      if (respCenter){
+        var request = new sql.Request();
+        request.input('inputField', sql.VarChar, respCenter);
+        request.query(`SELECT * FROM [PROD].[Campaign] where [Responsibility Center] =@inputField`)
+        .then(campaignList =>{
+            res.status(200).json(campaignList)
+        })
+        .catch((err) => {res.status(400).json({ err });console.log(err)})
+      }else{
+        var request = new sql.Request();
+        request.query(`SELECT * FROM [PROD].[Campaign]`)
+        .then(campaignList =>{
+            res.status(200).json(campaignList)
+        })
+        .catch((err) => {res.status(400).json({ err });console.log(err)})
+      }
     });
 
     exports.getPaymentMethodList = ('/getPaymentMethodList', (req, res, next) => {
-      var request = new sql.Request();
-      const respCenter = req.query.respCenter
-      request.query(`SELECT * FROM [PROD].[PaymentMethod] where [Responsability Center]='${respCenter}'`)
-      .then(paymentMethodList =>{
-          res.status(200).json(paymentMethodList)
-      })
-      .catch((err) => {res.status(400).json({ err });console.log(err)})
+        var request = new sql.Request();
+        const respCenter = req.query.respCenter
+        if(respCenter){
+            request.query(`SELECT * FROM [PROD].[PaymentMethod] where [Responsability Center]='${respCenter}'`)
+            .then(paymentMethodList =>{
+                res.status(200).json(paymentMethodList)
+            })
+            .catch((err) => {res.status(400).json({ err });console.log(err)})
+        }else{
+            request.query(`SELECT * FROM [PROD].[PaymentMethod]`)
+            .then(paymentMethodList =>{
+                res.status(200).json(paymentMethodList)
+            })
+            .catch((err) => {res.status(400).json({ err });console.log(err)})
+        }
     });
 
     exports.getSaleOrderPaymentLine = ('/getSaleOrderPaymentLine/:id', (req, res, next) => {
@@ -463,56 +563,3 @@ exports.getUserInfo = ('/getUserInfo',(req, res, next) => {
       })
       .catch((err) => {res.status(400).json({ err });console.log(err)})
     });
-
-
-
-
-
-
-  //   exports.getCRList = ('/getCRList',(req, res, next) => {
-  //     const respCenter = req.query.respCenter
-  //     var request = new sql.Request();
-  //     request.query(`select * from [PROD].[MirindraRequestHeader] where [Responsibility Center] ='${respCenter}'`)
-  //     .then((result) => {
-  //         if(result.recordset.length>0){
-  //             res.status(200).json(result.recordset)
-  //         }else{
-  //             res.status(404).json({message:"Aucun enregistrement n'a été trouvé"})
-  //         }
-
-  //     })
-  //     .catch((err) => {res.status(500).json({ err });console.log(err)}); 
-  // });
-
-//  exports.getCRCard = ('getCRCard/:id', (req, res, next) => {
-//       let data = []
-//       const respCenter = req.query.respCenter
-//       //let crCardHeader, crCardLine, crCardCriteria, crCardAmortization
-//       var request = new sql.Request();
-//           request.query(`SELECT * FROM [PROD].[MirindraRequestHeader] WHERE [No_]='${req.params.id}' and [Responsibility Center] ='${respCenter}'`)
-//           .then(result1 => {
-//               if(result1.recordset.length>0){
-//                   data.push(result1.recordset[0])
-//                   request.query(`SELECT * FROM [PROD].[MirindraRequestLine] WHERE [Document No_]='${req.params.id}'`)
-//                   .then(result2 =>{
-//                       data.push(result2.recordset)
-//                       request.query(`SELECT * FROM [PROD].[MirindraRequestCriteria] WHERE [Document No_]='${req.params.id}' and [Document Type]=0 `)
-//                       .then(result3 =>{
-//                           data.push(result3.recordset)
-//                           res.status(200).json(data)
-//                           // request.query(`SELECT * FROM [PROD].[CreditAmortization] WHERE [Document No_]='${req.params.id}' and [Document Type]=0 `)
-//                           // .then(result4 =>{
-//                           //     data.push(result4.recordset)
-//                           //     res.status(200).json(data)                              
-//                           // })
-//                           // .catch((err) => {res.status(500).json({ err });console.log(err)})
-//                       })
-//                       .catch((err) => {res.status(500).json({ err });console.log(err)})
-//                   })
-//                   .catch((err) => {res.status(500).json({ err });console.log(err)})
-//               }else{
-//                   res.status(404).json({message:"Aucun enregistrement n'a été trouvé"})
-//               }
-//           })
-//           .catch((err) => {res.status(500).json({ err });console.log(err)}); 
-//     });

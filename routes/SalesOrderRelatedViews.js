@@ -9,6 +9,8 @@ router.get('/getDiscountRequestCard',SORVCtrl.getDiscountRequestCard);
 router.get('/getSOUnlockingList',SORVCtrl.getSOUnlockingList);
 router.get('/getSOUnlockingCard',SORVCtrl.getSOUnlockingCard);
 
+router.get('/controlVoucher',SORVCtrl.controlVoucher);
+
 
 
 

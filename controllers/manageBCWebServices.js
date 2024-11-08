@@ -1,12 +1,13 @@
 //const axios = require('axios')
 const httpntlm = require('httpntlm')
-const credentials = Buffer.from('108.175.0.116\\webservices:Afrikedge@2003').toString('base64')
+//const credentials = Buffer.from('108.175.0.116\\webservices:Afrikedge@2003').toString('base64')
+const credentials = Buffer.from('10.64.25.5\\WEBSERVICES:@Fr!kedge20$4').toString('base64')
 const getHttpntlmConfig = (param,data) => {
 
     return {
-        url: `http://108.175.0.116:7048/BC230/ODataV4/api_run?Company=${param}`,
-        username: 'webservices',
-        password: 'Afrikedge@2003',
+        url: `http://10.64.25.5:7048/UDTBC/ODataV4/api_run?Company=${param}`,
+        username: 'WEBSERVICES',
+        password: '@Fr!kedge20$4',
         workstation: 'choose.something',
         headers:{
             'Content-Type': 'application/json',
